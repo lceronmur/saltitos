@@ -15,19 +15,30 @@ public class PlayerKeyboard2D : MonoBehaviour
     public LayerMask groundLayer;
     public float groundCheckRadius = 0.25f;
 
-    [Header("Repel")]
-    public bool enablePlayerPush = true;
-    public float pushStrength = 2.0f;
-    public float pushUp = 0.15f;
+    [Header("Jump stability")]
+    public float coyoteTime = 0.08f;     // tolerancia si pierde suelo 1 frame
+    public float jumpBufferTime = 0.10f; // tolerancia si presiona salto un poco antes
+
+    [Header("Anti-sticky + Repel BOTH players")]
+    public bool antiStick = true;
+    public float separationDistance = 0.08f;
+    public float bumpImpulse = 1.8f;
+    public float separationCooldown = 0.05f;
+    public float blockSpeedDamping = 0f;
 
     private Rigidbody2D rb;
-    private bool jumpedThisFrame;
-    private bool isJumping;
+
+    private float inputX;
+    private float lastSeparateTime;
+
+    // timers para salto estable
+    private float coyoteTimer;
+    private float jumpBufferTimer;
 
     void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
-        if (animator == null) animator = GetComponent<Animator>();
+        if (animator == null) animator = GetComponentInChildren<Animator>();
 
         sr = GetComponent<SpriteRenderer>();
         if (sr == null) sr = GetComponentInChildren<SpriteRenderer>();
@@ -37,118 +48,132 @@ public class PlayerKeyboard2D : MonoBehaviour
 
     void Update()
     {
-        jumpedThisFrame = false;
-
-        float x = 0f;
-        bool jumpPressed = false;
+        // -------- INPUT --------
+        inputX = 0f;
 
         if (controls == ControlType.Arrows)
         {
-            if (Input.GetKey(KeyCode.LeftArrow)) x = -1f;
-            if (Input.GetKey(KeyCode.RightArrow)) x = 1f;
-            jumpPressed = Input.GetKeyDown(KeyCode.UpArrow);
+            if (Input.GetKey(KeyCode.LeftArrow)) inputX = -1f;
+            if (Input.GetKey(KeyCode.RightArrow)) inputX = 1f;
+
+            if (Input.GetKeyDown(KeyCode.UpArrow))
+                jumpBufferTimer = jumpBufferTime;
         }
         else
         {
-            if (Input.GetKey(KeyCode.A)) x = -1f;
-            if (Input.GetKey(KeyCode.D)) x = 1f;
-            jumpPressed = Input.GetKeyDown(KeyCode.W);
+            if (Input.GetKey(KeyCode.A)) inputX = -1f;
+            if (Input.GetKey(KeyCode.D)) inputX = 1f;
+
+            if (Input.GetKeyDown(KeyCode.W))
+                jumpBufferTimer = jumpBufferTime;
         }
 
-        bool grounded = IsGrounded();
+        // -------- Timers --------
+        if (jumpBufferTimer > 0f) jumpBufferTimer -= Time.deltaTime;
 
-        if (jumpPressed && grounded)
+        bool groundedNow = IsGroundedRaw();
+        if (groundedNow) coyoteTimer = coyoteTime;
+        else coyoteTimer -= Time.deltaTime;
+
+        // -------- Animator --------
+        animator.SetBool("IsWalking", Mathf.Abs(inputX) > 0.01f);
+        animator.SetBool("IsGrounded", groundedNow);
+        animator.SetFloat("XSpeed", Mathf.Abs(rb.linearVelocity.x));
+        animator.SetFloat("YVelocity", rb.linearVelocity.y);
+
+        if (sr != null && Mathf.Abs(inputX) > 0.01f)
+            sr.flipX = (inputX < 0f);
+    }
+
+    void FixedUpdate()
+    {
+        // Movimiento horizontal
+        rb.linearVelocity = new Vector2(inputX * moveSpeed, rb.linearVelocity.y);
+
+        // Salto estable: si hay buffer y coyote, salta
+        if (jumpBufferTimer > 0f && coyoteTimer > 0f)
         {
-            Jump();
-            jumpedThisFrame = true;
-            isJumping = true;
+            DoJump();
+            jumpBufferTimer = 0f;
+            coyoteTimer = 0f;
 
             animator.ResetTrigger("Jump");
             animator.SetTrigger("Jump");
         }
-
-        if (grounded && !jumpedThisFrame)
-            isJumping = false;
-
-        rb.linearVelocity = new Vector2(x * moveSpeed, rb.linearVelocity.y);
-
-        bool isWalking = Mathf.Abs(x) > 0.01f;
-
-        animator.SetBool("IsWalking", isWalking);
-        animator.SetBool("IsGrounded", grounded);
-        animator.SetFloat("XSpeed", Mathf.Abs(rb.linearVelocity.x));
-        animator.SetFloat("YVelocity", rb.linearVelocity.y);
-        animator.SetBool("IsJumping", isJumping);
-
-        if (sr != null && Mathf.Abs(x) > 0.01f)
-            sr.flipX = (x < 0f);
     }
 
-    void Jump()
+    void DoJump()
     {
         rb.linearVelocity = new Vector2(rb.linearVelocity.x, 0f);
         rb.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
     }
 
-    // ✅ Suelo = Ground layer OR encima de otro Player (Tag)
-    bool IsGrounded()
+    // --- Ground check estable ---
+    bool IsGroundedRaw()
     {
         if (groundCheck == null) return false;
 
+        // 1) suelo real por layer
         bool onGround = Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, groundLayer);
 
-        // detectar otro player como suelo
-        Collider2D[] hits = Physics2D.OverlapCircleAll(groundCheck.position, groundCheckRadius);
-        bool onOtherPlayer = false;
+        if (onGround) return true;
 
+        // 2) permitir “pararse” encima del otro player
+        Collider2D[] hits = Physics2D.OverlapCircleAll(groundCheck.position, groundCheckRadius);
         foreach (var h in hits)
         {
             if (h == null) continue;
-
-            // ignorar mis colliders
             if (h.transform == transform || h.transform.IsChildOf(transform)) continue;
 
             if (h.CompareTag("Player"))
             {
-                onOtherPlayer = true;
-                break;
+                // solo cuenta si voy cayendo o casi quieto (evita que cuente subiendo)
+                if (rb.linearVelocity.y <= 0.1f)
+                    return true;
             }
         }
 
-        // solo cuenta como suelo si estás cayendo o casi quieto (evita pegarse subiendo)
-        if (onOtherPlayer && rb.linearVelocity.y > 0.1f) onOtherPlayer = false;
-
-        return onGround || onOtherPlayer;
+        return false;
     }
 
-    // ✅ Repulsión solo lateral (no cuando caen encima)
-    private void OnCollisionEnter2D(Collision2D collision)
+    // --- Repel to BOTH players ---
+    private void OnCollisionStay2D(Collision2D collision)
     {
-        if (!enablePlayerPush) return;
+        if (!antiStick) return;
         if (!collision.gameObject.CompareTag("Player")) return;
 
-        var otherRb = collision.rigidbody;
+        Rigidbody2D otherRb = collision.rigidbody;
         if (otherRb == null) return;
+
+        if (Time.time - lastSeparateTime < separationCooldown) return;
 
         Vector2 n = collision.GetContact(0).normal;
 
-        // choque lateral = empujar
-        if (Mathf.Abs(n.x) > Mathf.Abs(n.y))
-        {
-            float dir = Mathf.Sign(n.x);
-            Vector2 impulse = new Vector2(dir, pushUp).normalized * pushStrength;
+        // solo choques laterales
+        if (Mathf.Abs(n.x) <= Mathf.Abs(n.y)) return;
 
-            rb.AddForce(impulse, ForceMode2D.Impulse);
-            otherRb.AddForce(-impulse, ForceMode2D.Impulse);
-        }
+        float otherDir = Mathf.Sign(collision.transform.position.x - transform.position.x);
+
+        // si presiono hacia el otro, bloqueo mi empuje
+        if (Mathf.Abs(inputX) > 0.01f && Mathf.Sign(inputX) == otherDir)
+            rb.linearVelocity = new Vector2(inputX * moveSpeed * blockSpeedDamping, rb.linearVelocity.y);
+
+        // separación simétrica
+        rb.MovePosition(rb.position + new Vector2(-otherDir * separationDistance, 0f));
+        otherRb.MovePosition(otherRb.position + new Vector2(+otherDir * separationDistance, 0f));
+
+        // impulso para ambos
+        Vector2 impulse = new Vector2(-otherDir, 0f) * bumpImpulse;
+        rb.AddForce(impulse, ForceMode2D.Impulse);
+        otherRb.AddForce(-impulse, ForceMode2D.Impulse);
+
+        lastSeparateTime = Time.time;
     }
 
-    // (opcional) dibuja el círculo del groundcheck para debug
     private void OnDrawGizmosSelected()
     {
         if (groundCheck == null) return;
         Gizmos.color = Color.yellow;
         Gizmos.DrawWireSphere(groundCheck.position, groundCheckRadius);
     }
-   
 }

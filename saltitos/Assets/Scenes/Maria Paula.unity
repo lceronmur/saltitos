@@ -470,7 +470,7 @@ Transform:
   m_GameObject: {fileID: 186411052}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 6.56, y: 2.27, z: 0}
+  m_LocalPosition: {x: 5.58, y: 1.75, z: 0}
   m_LocalScale: {x: 3, y: 2.413502, z: 1}
   m_ConstrainProportionsScale: 1
   m_Children:
@@ -643,7 +643,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerMovement2D_Multi
   controls: 0
-  animator: {fileID: 0}
+  animator: {fileID: 188549623}
   moveSpeed: 8
   jumpForce: 14
   groundCheck: {fileID: 1982953680}
@@ -651,9 +651,13 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 8
   groundCheckRadius: 0.15
-  enablePlayerPush: 1
-  pushStrength: 2
-  pushUp: 0.3
+  coyoteTime: 0.08
+  jumpBufferTime: 0.1
+  antiStick: 1
+  separationDistance: 1
+  bumpImpulse: 1.8
+  separationCooldown: 0.05
+  blockSpeedDamping: 0
 --- !u!70 &188549620
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
@@ -714,9 +718,9 @@ Rigidbody2D:
   m_ExcludeLayers:
     serializedVersion: 2
     m_Bits: 0
-  m_Interpolate: 0
+  m_Interpolate: 1
   m_SleepingMode: 1
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
   m_Constraints: 4
 --- !u!4 &188549622
 Transform:
@@ -1103,7 +1107,7 @@ SpriteRenderer:
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 2
+  m_SortingOrder: 3
   m_MaskInteraction: 0
   m_Sprite: {fileID: 8539575401756189376, guid: 19cecb9c51d207a42acfbe5df2b29ca6, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -1124,7 +1128,7 @@ Transform:
   m_GameObject: {fileID: 429649921}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -6.31, y: -2.22, z: 0}
+  m_LocalPosition: {x: -4.67, y: -2.22, z: 0}
   m_LocalScale: {x: 3, y: 2.413502, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -1228,7 +1232,7 @@ Transform:
   m_GameObject: {fileID: 468481324}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -0.52, z: 0}
+  m_LocalPosition: {x: 0, y: -0.566, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -2235,7 +2239,7 @@ Transform:
   m_GameObject: {fileID: 1289717742}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -6.18, y: 2.52, z: 0}
+  m_LocalPosition: {x: -5.38, y: 2.1, z: 0}
   m_LocalScale: {x: 3, y: 2.4135025, z: 1}
   m_ConstrainProportionsScale: 1
   m_Children:
@@ -2815,7 +2819,7 @@ Transform:
   m_GameObject: {fileID: 1444033227}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 6.54, y: -2.33, z: 0}
+  m_LocalPosition: {x: 4.62, y: -2.33, z: 0}
   m_LocalScale: {x: 3, y: 2.413502, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -3628,7 +3632,7 @@ Transform:
   m_GameObject: {fileID: 1982953679}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -0.52, z: 0}
+  m_LocalPosition: {x: 0, y: -0.57, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -3716,9 +3720,9 @@ Rigidbody2D:
   m_ExcludeLayers:
     serializedVersion: 2
     m_Bits: 0
-  m_Interpolate: 0
+  m_Interpolate: 1
   m_SleepingMode: 1
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
   m_Constraints: 4
 --- !u!4 &2058792474
 Transform:
@@ -3749,7 +3753,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerMovement2D_Multi
   controls: 1
-  animator: {fileID: 0}
+  animator: {fileID: 2058792477}
   moveSpeed: 8
   jumpForce: 14
   groundCheck: {fileID: 468481325}
@@ -3757,9 +3761,13 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 8
   groundCheckRadius: 0.15
-  enablePlayerPush: 1
-  pushStrength: 2
-  pushUp: 0.3
+  coyoteTime: 0.08
+  jumpBufferTime: 0.1
+  antiStick: 1
+  separationDistance: 1
+  bumpImpulse: 1.8
+  separationCooldown: 0.05
+  blockSpeedDamping: 0
 --- !u!212 &2058792476
 SpriteRenderer:
   serializedVersion: 2
