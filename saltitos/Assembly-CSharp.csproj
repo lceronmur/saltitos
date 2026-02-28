@@ -66,6 +66,7 @@
     <Compile Include="Assets\Scripts\PlayerLives.cs" />
     <Compile Include="Assets\Scripts\HUDController.cs" />
     <Compile Include="Assets\Scripts\PlayerKeyboard2D.cs" />
+    <Compile Include="Assets\Scripts\MainMenuManager.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\TextMesh Pro\Shaders\TMPro.cginc" />
