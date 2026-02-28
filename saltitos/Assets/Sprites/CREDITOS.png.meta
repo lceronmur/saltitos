@@ -1,22 +1,10 @@
 fileFormatVersion: 2
-guid: c5cf8252adef24246acfc0155f311d97
+guid: 5731a2d87fdd07b499d7b284b31bf945
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -3848782880521498382
-    second: saltofrente1_0
-  - first:
-      213: 6034367821407308398
-    second: saltofrente1_1
-  - first:
-      213: 8125978574937341522
-    second: saltofrente1_2
-  - first:
-      213: 6452090256939308678
-    second: saltofrente1_3
-  - first:
-      213: 2286226369565540436
-    second: saltofrente1_4
+      213: -449814729466383560
+    second: CREDITOS_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -63,7 +51,7 @@ TextureImporter:
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 20
+  spritePixelsToUnits: 100
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -125,79 +113,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: saltofrente1_0
+      name: CREDITOS_0
       rect:
         serializedVersion: 2
-        x: 1
-        y: 37
-        width: 31
-        height: 26
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 2f059e4ac50669ac0800000000000000
-      internalID: -3848782880521498382
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: saltofrente1_1
-      rect:
-        serializedVersion: 2
-        x: 33
-        y: 34
-        width: 31
-        height: 22
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: e6ac707ef816eb350800000000000000
-      internalID: 6034367821407308398
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: saltofrente1_2
-      rect:
-        serializedVersion: 2
-        x: 65
-        y: 33
-        width: 31
-        height: 31
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 25e339be57645c070800000000000000
-      internalID: 8125978574937341522
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: saltofrente1_3
-      rect:
-        serializedVersion: 2
-        x: 1
+        x: 0
         y: 0
-        width: 31
-        height: 32
+        width: 672
+        height: 144
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -206,30 +128,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 68650af67ed6a8950800000000000000
-      internalID: 6452090256939308678
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: saltofrente1_4
-      rect:
-        serializedVersion: 2
-        x: 33
-        y: 5
-        width: 31
-        height: 26
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 450c51a25ce4abf10800000000000000
-      internalID: 2286226369565540436
+      spriteID: 833fa6303efe1c9f0800000000000000
+      internalID: -449814729466383560
       vertices: []
       indices: 
       edges: []
@@ -248,11 +148,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      saltofrente1_0: -3848782880521498382
-      saltofrente1_1: 6034367821407308398
-      saltofrente1_2: 8125978574937341522
-      saltofrente1_3: 6452090256939308678
-      saltofrente1_4: 2286226369565540436
+      CREDITOS_0: -449814729466383560
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
