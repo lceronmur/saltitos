@@ -487,6 +487,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerMovement2D_Multi
   controls: 0
+  animator: {fileID: 0}
   moveSpeed: 8
   jumpForce: 14
   groundCheck: {fileID: 1982953680}
@@ -1422,6 +1423,7 @@ GameObject:
   - component: {fileID: 2058792472}
   - component: {fileID: 2058792475}
   - component: {fileID: 2058792476}
+  - component: {fileID: 2058792477}
   m_Layer: 0
   m_Name: player1
   m_TagString: Untagged
@@ -1522,6 +1524,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerMovement2D_Multi
   controls: 1
+  animator: {fileID: 0}
   moveSpeed: 8
   jumpForce: 14
   groundCheck: {fileID: 468481325}
@@ -1588,6 +1591,28 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
+--- !u!95 &2058792477
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2058792470}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 1bea1c83744534f43a735854cc501851, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
