@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 5731a2d87fdd07b499d7b284b31bf945
+guid: 19cecb9c51d207a42acfbe5df2b29ca6
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -449814729466383560
-    second: CREDITOS_0
+      213: 8539575401756189376
+    second: Plataforma 2_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -113,13 +113,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: CREDITOS_0
+      name: Plataforma 2_0
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 672
-        height: 144
+        width: 114
+        height: 24
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -128,8 +128,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 833fa6303efe1c9f0800000000000000
-      internalID: -449814729466383560
+      spriteID: 0c26752559aa28670800000000000000
+      internalID: 8539575401756189376
       vertices: []
       indices: 
       edges: []
@@ -148,7 +148,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      CREDITOS_0: -449814729466383560
+      Plataforma 2_0: 8539575401756189376
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
