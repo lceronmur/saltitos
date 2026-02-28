@@ -10,12 +10,17 @@ public class PlatformColorManager : MonoBehaviour
     public HUDController hud; // (opcional) arrastras el HUD aquí
 
     [Header("References")]
-    public PlatformRandomColor[] platforms;   // tus 5 plataformas
+    public PlatformRandomColor[] platforms;
     public PlayerLives player1;
     public PlayerLives player2;
 
     [Header("Round Settings")]
     public float roundDuration = 10f;
+
+    [Header("Pauses")]
+    public float afterLifeLossPause = 1.0f;   // tiempo para ver explosión
+    public float betweenRoundsPause = 0.3f;   // mini pausa entre rondas
+    public float resultScreenSeconds = 2.5f;  // mostrar ganador antes de detener
 
     [Header("Fixed Color Palette (no similares)")]
     public Color[] palette;
@@ -23,7 +28,6 @@ public class PlatformColorManager : MonoBehaviour
     [Header("Color Names (mismo orden que palette)")]
     public string[] colorNames;
 
-    // Color objetivo actual (por ID)
     private int targetColorId = -1;
 
     void Start()
@@ -60,10 +64,37 @@ public class PlatformColorManager : MonoBehaviour
                 yield return null;
             }
 
-            EvaluateAndApplyLives();
+            // Evaluar y aplicar vidas (devuelve quién perdió)
+            bool p1Lost, p2Lost;
+            EvaluateAndApplyLives(out p1Lost, out p2Lost);
+
+            bool someoneLostLife = p1Lost || p2Lost;
+
+            // Pausa para ver explosión + respawn solo del que perdió
+            if (someoneLostLife)
+            {
+                yield return new WaitForSeconds(afterLifeLossPause);
+
+                if (p1Lost && player1.IsAlive()) player1.Respawn();
+                if (p2Lost && player2.IsAlive()) player2.Respawn();
+            }
+
+            // Si alguien ya quedó en 0, termina
+            if (!player1.IsAlive() || !player2.IsAlive())
+                break;
+
+            // mini pausa antes de la siguiente ronda
+            if (betweenRoundsPause > 0f)
+                yield return new WaitForSeconds(betweenRoundsPause);
         }
 
-        AnnounceWinnerAndStop();
+        // Ganador (solo cuando alguien llegó a 0)
+        AnnounceWinner();
+
+        // Espera para ver el resultado en pantalla
+        yield return new WaitForSeconds(resultScreenSeconds);
+
+        StopGame();
     }
 
     void AssignUniqueColorsToPlatforms()
@@ -78,6 +109,7 @@ public class PlatformColorManager : MonoBehaviour
             (ids[i], ids[j]) = (ids[j], ids[i]);
         }
 
+        // Asignar primeros N (N = # plataformas)
         for (int i = 0; i < platforms.Length; i++)
         {
             int id = ids[i];
@@ -93,27 +125,35 @@ public class PlatformColorManager : MonoBehaviour
         TargetColorName = colorNames[targetColorId];
     }
 
-    void EvaluateAndApplyLives()
+    // Evalúa la regla y aplica vidas. Devuelve quién perdió vida.
+    void EvaluateAndApplyLives(out bool p1Lost, out bool p2Lost)
     {
         bool p1Correct = IsPlayerOnTarget(player1);
         bool p2Correct = IsPlayerOnTarget(player2);
 
+        p1Lost = false;
+        p2Lost = false;
+
+        // Regla:
+        // - Ambos correctos -> pierden ambos
+        // - Ninguno correcto -> pierden ambos
+        // - Solo uno correcto -> pierde el que NO está
         if (p1Correct && p2Correct)
         {
-            player1.LoseLife(1);
-            player2.LoseLife(1);
+            player1.LoseLife(1); p1Lost = true;
+            player2.LoseLife(1); p2Lost = true;
             Debug.Log("Ambos en la correcta: ambos pierden 1 vida.");
         }
         else if (!p1Correct && !p2Correct)
         {
-            player1.LoseLife(1);
-            player2.LoseLife(1);
+            player1.LoseLife(1); p1Lost = true;
+            player2.LoseLife(1); p2Lost = true;
             Debug.Log("Ninguno en la correcta: ambos pierden 1 vida.");
         }
         else
         {
-            if (!p1Correct) { player1.LoseLife(1); Debug.Log("P1 falló: pierde 1 vida."); }
-            if (!p2Correct) { player2.LoseLife(1); Debug.Log("P2 falló: pierde 1 vida."); }
+            if (!p1Correct) { player1.LoseLife(1); p1Lost = true; Debug.Log("P1 falló: pierde 1 vida."); }
+            if (!p2Correct) { player2.LoseLife(1); p2Lost = true; Debug.Log("P2 falló: pierde 1 vida."); }
         }
 
         Debug.Log($"Vidas -> P1: {player1.lives} | P2: {player2.lives}");
@@ -126,7 +166,7 @@ public class PlatformColorManager : MonoBehaviour
         return p.currentPlatform.colorId == targetColorId;
     }
 
-    void AnnounceWinnerAndStop()
+    void AnnounceWinner()
     {
         string result;
 
@@ -138,8 +178,6 @@ public class PlatformColorManager : MonoBehaviour
 
         if (hud != null)
             hud.ShowResult(result);
-
-        StopGame();
     }
 
     void StopGame()
