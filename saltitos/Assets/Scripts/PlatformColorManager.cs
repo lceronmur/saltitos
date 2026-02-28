@@ -166,19 +166,21 @@ public class PlatformColorManager : MonoBehaviour
         return p.currentPlatform.colorId == targetColorId;
     }
 
-    void AnnounceWinner()
-    {
-        string result;
+void AnnounceWinner()
+{
+    string result;
 
-        if (player1.lives > player2.lives) result = "GANADOR: Player 1";
-        else if (player2.lives > player1.lives) result = "GANADOR: Player 2";
-        else result = "EMPATE";
+    if (player1.lives > player2.lives) result = "Player1";
+    else if (player2.lives > player1.lives) result = "Player2";
+    else result = "EMPATE";
 
-        Debug.Log(result);
+    Debug.Log(result);
 
-        if (hud != null)
-            hud.ShowResult(result);
-    }
+    if (hud != null)
+        hud.ShowResult(result);   // ESTA es la que sí existe
+    else
+        Debug.LogError("HUD no asignado en PlatformColorManager");
+}
 
     void StopGame()
     {
