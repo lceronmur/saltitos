@@ -13,7 +13,7 @@ public class PlayerKeyboard2D : MonoBehaviour
 
     public Transform groundCheck;
     public LayerMask groundLayer;
-    public float groundCheckRadius = 0.22f; // ↑ un poquito más estable
+    public float groundCheckRadius = 0.22f;
 
     public bool enablePlayerPush = true;
     public float pushStrength = 2.0f;
@@ -21,9 +21,8 @@ public class PlayerKeyboard2D : MonoBehaviour
 
     private Rigidbody2D rb;
 
-    // Para evitar “falsos saltos” por micro cambios de YVelocity
     private bool jumpedThisFrame;
-    private bool isJumping; // estado real de salto (aire)
+    private bool isJumping;
 
     void Awake()
     {
@@ -57,7 +56,7 @@ public class PlayerKeyboard2D : MonoBehaviour
             jumpPressed = Input.GetKeyDown(KeyCode.W);
         }
 
-        // Grounded una sola vez (más consistente)
+        // Grounded una sola vez
         bool grounded = IsGrounded();
 
         // ---------- JUMP ----------
@@ -65,11 +64,13 @@ public class PlayerKeyboard2D : MonoBehaviour
         {
             Jump();
             jumpedThisFrame = true;
-            isJumping = true;                 // ya entró al aire por salto real
-            animator.SetTrigger("Jump");      // ✅ Trigger para activar anim de salto SOLO cuando salta
+            isJumping = true;
+
+            // Para que no se “bloquee” si spameas salto
+            animator.ResetTrigger("Jump");
+            animator.SetTrigger("Jump");
         }
 
-        // Si está en el suelo, ya no está saltando
         if (grounded && !jumpedThisFrame)
             isJumping = false;
 
@@ -82,11 +83,9 @@ public class PlayerKeyboard2D : MonoBehaviour
         animator.SetBool("IsWalking", isWalking);
         animator.SetBool("IsGrounded", grounded);
 
-        // Útil para transiciones (subida/caída)
         animator.SetFloat("XSpeed", Mathf.Abs(rb.linearVelocity.x));
         animator.SetFloat("YVelocity", rb.linearVelocity.y);
 
-        // Opcional: si quieres usarlo como condición extra en Animator
         animator.SetBool("IsJumping", isJumping);
 
         // ---------- FLIP ----------
