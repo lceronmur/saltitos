@@ -1,48 +1,155 @@
 using UnityEngine;
+using System.Collections;
 using System.Collections.Generic;
 
 public class PlatformColorManager : MonoBehaviour
 {
-    public PlatformRandomColor[] platforms; 
-    public float changeEverySeconds = 10f;
+    // Para UI
+    public float TimeLeft { get; private set; }
+    public string TargetColorName { get; private set; } = "";
+    public HUDController hud; // (opcional) arrastras el HUD aquí
 
-    public Color[] palette = new Color[]
-    {
-        Color.red,
-        Color.green,
-        Color.blue,
-        Color.yellow,
-        Color.magenta,
-        Color.cyan
-    };
+    [Header("References")]
+    public PlatformRandomColor[] platforms;   // tus 5 plataformas
+    public PlayerLives player1;
+    public PlayerLives player2;
+
+    [Header("Round Settings")]
+    public float roundDuration = 10f;
+
+    [Header("Fixed Color Palette (no similares)")]
+    public Color[] palette;
+
+    [Header("Color Names (mismo orden que palette)")]
+    public string[] colorNames;
+
+    // Color objetivo actual (por ID)
+    private int targetColorId = -1;
 
     void Start()
     {
-        ApplyUniqueColors();
-        InvokeRepeating(nameof(ApplyUniqueColors), changeEverySeconds, changeEverySeconds);
+        if (palette == null || palette.Length < platforms.Length)
+        {
+            Debug.LogError("La paleta debe tener AL MENOS la misma cantidad de colores que plataformas.");
+            return;
+        }
+
+        if (colorNames == null || colorNames.Length != palette.Length)
+        {
+            Debug.LogError("colorNames debe existir y tener el MISMO tamaño que palette (mismo orden).");
+            return;
+        }
+
+        StartCoroutine(RoundLoop());
     }
 
-    void ApplyUniqueColors()
+    IEnumerator RoundLoop()
     {
-        if (platforms == null || platforms.Length == 0) return;
+        while (player1.IsAlive() && player2.IsAlive())
+        {
+            AssignUniqueColorsToPlatforms();
+            PickTargetColorFromPlatforms();
 
-        List<Color> colors = new List<Color>(palette);
+            Debug.Log($"COLOR OBJETIVO: {TargetColorName}");
 
-        // Si faltan colores para la cantidad de plataformas, genera más
-        while (colors.Count < platforms.Length)
-            colors.Add(Random.ColorHSV(0f, 1f, 0.6f, 1f, 0.7f, 1f));
+            // contador para UI
+            TimeLeft = roundDuration;
+            while (TimeLeft > 0f)
+            {
+                TimeLeft -= Time.deltaTime;
+                yield return null;
+            }
 
-        // Mezclar colores (shuffle)
-        for (int i = colors.Count - 1; i > 0; i--)
+            EvaluateAndApplyLives();
+        }
+
+        AnnounceWinnerAndStop();
+    }
+
+    void AssignUniqueColorsToPlatforms()
+    {
+        List<int> ids = new List<int>();
+        for (int i = 0; i < palette.Length; i++) ids.Add(i);
+
+        // Shuffle
+        for (int i = ids.Count - 1; i > 0; i--)
         {
             int j = Random.Range(0, i + 1);
-            (colors[i], colors[j]) = (colors[j], colors[i]);
+            (ids[i], ids[j]) = (ids[j], ids[i]);
         }
 
-        // Asignar colores distintos a cada plataforma
         for (int i = 0; i < platforms.Length; i++)
         {
-            platforms[i].SetColor(colors[i]);
+            int id = ids[i];
+            platforms[i].SetColor(palette[id], id);
         }
+    }
+
+    void PickTargetColorFromPlatforms()
+    {
+        int index = Random.Range(0, platforms.Length);
+        targetColorId = platforms[index].colorId;
+
+        TargetColorName = colorNames[targetColorId];
+    }
+
+    void EvaluateAndApplyLives()
+    {
+        bool p1Correct = IsPlayerOnTarget(player1);
+        bool p2Correct = IsPlayerOnTarget(player2);
+
+        if (p1Correct && p2Correct)
+        {
+            player1.LoseLife(1);
+            player2.LoseLife(1);
+            Debug.Log("Ambos en la correcta: ambos pierden 1 vida.");
+        }
+        else if (!p1Correct && !p2Correct)
+        {
+            player1.LoseLife(1);
+            player2.LoseLife(1);
+            Debug.Log("Ninguno en la correcta: ambos pierden 1 vida.");
+        }
+        else
+        {
+            if (!p1Correct) { player1.LoseLife(1); Debug.Log("P1 falló: pierde 1 vida."); }
+            if (!p2Correct) { player2.LoseLife(1); Debug.Log("P2 falló: pierde 1 vida."); }
+        }
+
+        Debug.Log($"Vidas -> P1: {player1.lives} | P2: {player2.lives}");
+    }
+
+    bool IsPlayerOnTarget(PlayerLives p)
+    {
+        if (p == null) return false;
+        if (p.currentPlatform == null) return false;
+        return p.currentPlatform.colorId == targetColorId;
+    }
+
+    void AnnounceWinnerAndStop()
+    {
+        string result;
+
+        if (player1.lives > player2.lives) result = "GANADOR: Player 1";
+        else if (player2.lives > player1.lives) result = "GANADOR: Player 2";
+        else result = "EMPATE";
+
+        Debug.Log(result);
+
+        if (hud != null)
+            hud.ShowResult(result);
+
+        StopGame();
+    }
+
+    void StopGame()
+    {
+        Time.timeScale = 0f;
+
+#if UNITY_EDITOR
+        UnityEditor.EditorApplication.isPlaying = false;
+#else
+        Application.Quit();
+#endif
     }
 }

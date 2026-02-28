@@ -13,14 +13,14 @@ public class PlayerKeyboard2D : MonoBehaviour
 
     public Transform groundCheck;
     public LayerMask groundLayer;
-    public float groundCheckRadius = 0.22f;
+    public float groundCheckRadius = 0.25f;
 
+    [Header("Repel")]
     public bool enablePlayerPush = true;
     public float pushStrength = 2.0f;
-    public float pushUp = 0.3f;
+    public float pushUp = 0.15f;
 
     private Rigidbody2D rb;
-
     private bool jumpedThisFrame;
     private bool isJumping;
 
@@ -39,7 +39,6 @@ public class PlayerKeyboard2D : MonoBehaviour
     {
         jumpedThisFrame = false;
 
-        // ---------- INPUT ----------
         float x = 0f;
         bool jumpPressed = false;
 
@@ -56,17 +55,14 @@ public class PlayerKeyboard2D : MonoBehaviour
             jumpPressed = Input.GetKeyDown(KeyCode.W);
         }
 
-        // Grounded una sola vez
         bool grounded = IsGrounded();
 
-        // ---------- JUMP ----------
         if (jumpPressed && grounded)
         {
             Jump();
             jumpedThisFrame = true;
             isJumping = true;
 
-            // Para que no se “bloquee” si spameas salto
             animator.ResetTrigger("Jump");
             animator.SetTrigger("Jump");
         }
@@ -74,21 +70,16 @@ public class PlayerKeyboard2D : MonoBehaviour
         if (grounded && !jumpedThisFrame)
             isJumping = false;
 
-        // ---------- MOVEMENT ----------
         rb.linearVelocity = new Vector2(x * moveSpeed, rb.linearVelocity.y);
 
-        // ---------- ANIMATOR PARAMS ----------
         bool isWalking = Mathf.Abs(x) > 0.01f;
 
         animator.SetBool("IsWalking", isWalking);
         animator.SetBool("IsGrounded", grounded);
-
         animator.SetFloat("XSpeed", Mathf.Abs(rb.linearVelocity.x));
         animator.SetFloat("YVelocity", rb.linearVelocity.y);
-
         animator.SetBool("IsJumping", isJumping);
 
-        // ---------- FLIP ----------
         if (sr != null && Mathf.Abs(x) > 0.01f)
             sr.flipX = (x < 0f);
     }
@@ -99,27 +90,65 @@ public class PlayerKeyboard2D : MonoBehaviour
         rb.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
     }
 
+    // ✅ Suelo = Ground layer OR encima de otro Player (Tag)
     bool IsGrounded()
     {
         if (groundCheck == null) return false;
-        return Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, groundLayer);
+
+        bool onGround = Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, groundLayer);
+
+        // detectar otro player como suelo
+        Collider2D[] hits = Physics2D.OverlapCircleAll(groundCheck.position, groundCheckRadius);
+        bool onOtherPlayer = false;
+
+        foreach (var h in hits)
+        {
+            if (h == null) continue;
+
+            // ignorar mis colliders
+            if (h.transform == transform || h.transform.IsChildOf(transform)) continue;
+
+            if (h.CompareTag("Player"))
+            {
+                onOtherPlayer = true;
+                break;
+            }
+        }
+
+        // solo cuenta como suelo si estás cayendo o casi quieto (evita pegarse subiendo)
+        if (onOtherPlayer && rb.linearVelocity.y > 0.1f) onOtherPlayer = false;
+
+        return onGround || onOtherPlayer;
     }
 
+    // ✅ Repulsión solo lateral (no cuando caen encima)
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (!enablePlayerPush) return;
         if (!collision.gameObject.CompareTag("Player")) return;
 
-        Rigidbody2D otherRb = collision.rigidbody;
+        var otherRb = collision.rigidbody;
         if (otherRb == null) return;
 
-        Vector2 dir = (rb.position - otherRb.position);
-        if (dir.sqrMagnitude < 0.0001f) dir = Vector2.right;
-        dir.Normalize();
+        Vector2 n = collision.GetContact(0).normal;
 
-        Vector2 impulse = new Vector2(dir.x, pushUp).normalized * pushStrength;
+        // choque lateral = empujar
+        if (Mathf.Abs(n.x) > Mathf.Abs(n.y))
+        {
+            float dir = Mathf.Sign(n.x);
+            Vector2 impulse = new Vector2(dir, pushUp).normalized * pushStrength;
 
-        rb.AddForce(impulse, ForceMode2D.Impulse);
-        otherRb.AddForce(-impulse, ForceMode2D.Impulse);
+            rb.AddForce(impulse, ForceMode2D.Impulse);
+            otherRb.AddForce(-impulse, ForceMode2D.Impulse);
+        }
     }
+
+    // (opcional) dibuja el círculo del groundcheck para debug
+    private void OnDrawGizmosSelected()
+    {
+        if (groundCheck == null) return;
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawWireSphere(groundCheck.position, groundCheckRadius);
+    }
+   
 }

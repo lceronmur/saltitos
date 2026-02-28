@@ -62,6 +62,9 @@
   <ItemGroup>
     <Compile Include="Assets\Scripts\PlatformColorManager.cs" />
     <Compile Include="Assets\Scripts\PlatformRandomColor.cs" />
+    <Compile Include="Assets\Scripts\PlatformTrigger.cs" />
+    <Compile Include="Assets\Scripts\PlayerLives.cs" />
+    <Compile Include="Assets\Scripts\HUDController.cs" />
     <Compile Include="Assets\Scripts\PlayerKeyboard2D.cs" />
   </ItemGroup>
   <ItemGroup>
