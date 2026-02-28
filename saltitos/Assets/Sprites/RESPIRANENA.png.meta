@@ -1,31 +1,31 @@
 fileFormatVersion: 2
-guid: 518cf1471d4f78941a8eaf813b86ef19
+guid: ae0795767ec2499448caa53b7c8ba10c
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -5795648706541564063
-    second: RESPIRANENA2_0
+      213: 9057533247597014715
+    second: RESPIRANENA_0
   - first:
-      213: 6099040100343871132
-    second: RESPIRANENA2_1
+      213: -1956916877424423287
+    second: RESPIRANENA_1
   - first:
-      213: -8925554800751873180
-    second: RESPIRANENA2_2
+      213: -5649854163716501587
+    second: RESPIRANENA_2
   - first:
-      213: 1706812053680141217
-    second: RESPIRANENA2_3
+      213: 9195616287120875185
+    second: RESPIRANENA_3
   - first:
-      213: 9092208737253299151
-    second: RESPIRANENA2_4
+      213: 4143954074280419275
+    second: RESPIRANENA_4
   - first:
-      213: 7349981970644145524
-    second: RESPIRANENA2_5
+      213: 8683076413539840394
+    second: RESPIRANENA_5
   - first:
-      213: 8484648004005586527
-    second: RESPIRANENA2_6
+      213: -5439077647650497568
+    second: RESPIRANENA_6
   - first:
-      213: 7670892066715767385
-    second: RESPIRANENA2_7
+      213: 8485872170966088231
+    second: RESPIRANENA_7
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -134,177 +134,177 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: RESPIRANENA2_0
+      name: RESPIRANENA_0
       rect:
         serializedVersion: 2
-        x: 1
+        x: 0
         y: 65
-        width: 31
+        width: 32
         height: 26
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 16f43a34538b19fa0800000000000000
-      internalID: -5795648706541564063
+      spriteID: bbe6f44ff72d2bd70800000000000000
+      internalID: 9057533247597014715
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: RESPIRANENA2_1
+      name: RESPIRANENA_1
       rect:
         serializedVersion: 2
         x: 32
         y: 65
-        width: 31
+        width: 32
         height: 26
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: c96fbdb38a424a450800000000000000
-      internalID: 6099040100343871132
+      spriteID: 98e862ad772a7d4e0800000000000000
+      internalID: -1956916877424423287
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: RESPIRANENA2_2
+      name: RESPIRANENA_2
+      rect:
+        serializedVersion: 2
+        x: 63
+        y: 65
+        width: 33
+        height: 26
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: daf8ae2829fa791b0800000000000000
+      internalID: -5649854163716501587
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: RESPIRANENA_3
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 33
+        width: 32
+        height: 26
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1bed2acea446d9f70800000000000000
+      internalID: 9195616287120875185
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: RESPIRANENA_4
+      rect:
+        serializedVersion: 2
+        x: 32
+        y: 33
+        width: 32
+        height: 26
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: bcf54036648428930800000000000000
+      internalID: 4143954074280419275
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: RESPIRANENA_5
       rect:
         serializedVersion: 2
         x: 64
-        y: 65
-        width: 32
-        height: 26
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 463f6e5c23f022480800000000000000
-      internalID: -8925554800751873180
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: RESPIRANENA2_3
-      rect:
-        serializedVersion: 2
-        x: 1
-        y: 33
-        width: 30
-        height: 26
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 1a3b5fd0580dfa710800000000000000
-      internalID: 1706812053680141217
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: RESPIRANENA2_4
-      rect:
-        serializedVersion: 2
-        x: 32
         y: 33
         width: 32
         height: 26
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: fc39fa78ca30e2e70800000000000000
-      internalID: 9092208737253299151
+      spriteID: a817d924efb708870800000000000000
+      internalID: 8683076413539840394
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: RESPIRANENA2_5
-      rect:
-        serializedVersion: 2
-        x: 65
-        y: 33
-        width: 31
-        height: 26
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 47515c119a1600660800000000000000
-      internalID: 7349981970644145524
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: RESPIRANENA2_6
+      name: RESPIRANENA_6
       rect:
         serializedVersion: 2
         x: 0
         y: 1
-        width: 31
+        width: 32
         height: 26
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: f56eaf2f7668fb570800000000000000
-      internalID: 8484648004005586527
+      spriteID: 0eb560a62b38484b0800000000000000
+      internalID: -5439077647650497568
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: RESPIRANENA2_7
+      name: RESPIRANENA_7
       rect:
         serializedVersion: 2
-        x: 33
+        x: 32
         y: 1
-        width: 32
+        width: 33
         height: 26
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 95294fa41bb747a60800000000000000
-      internalID: 7670892066715767385
+      spriteID: 72a7ec787cfd3c570800000000000000
+      internalID: 8485872170966088231
       vertices: []
       indices: 
       edges: []
@@ -313,7 +313,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 7e65378012abaa44b9b47bc5bdf8a022
+    spriteID: 
     internalID: 0
     vertices: []
     indices: 
@@ -323,14 +323,14 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      RESPIRANENA2_0: -5795648706541564063
-      RESPIRANENA2_1: 6099040100343871132
-      RESPIRANENA2_2: -8925554800751873180
-      RESPIRANENA2_3: 1706812053680141217
-      RESPIRANENA2_4: 9092208737253299151
-      RESPIRANENA2_5: 7349981970644145524
-      RESPIRANENA2_6: 8484648004005586527
-      RESPIRANENA2_7: 7670892066715767385
+      RESPIRANENA_0: 9057533247597014715
+      RESPIRANENA_1: -1956916877424423287
+      RESPIRANENA_2: -5649854163716501587
+      RESPIRANENA_3: 9195616287120875185
+      RESPIRANENA_4: 4143954074280419275
+      RESPIRANENA_5: 8683076413539840394
+      RESPIRANENA_6: -5439077647650497568
+      RESPIRANENA_7: 8485872170966088231
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
